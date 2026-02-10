@@ -34,7 +34,7 @@ body{
 }
 
 h1{
-  font-size:24px;
+  font-size:22px;
   margin-bottom:20px;
 }
 
@@ -61,7 +61,7 @@ button{
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="box">
   <h1 id="question">Will you be my Valentine? 💖</h1>
   <button class="yes" onclick="sayYes()">Yes 😍</button>
   <button class="no" id="noBtn">No 😢</button>
@@ -70,23 +70,31 @@ button{
 <script>
 
 const noBtn = document.getElementById("noBtn");
+const container = document.getElementById("box");
 const question = document.getElementById("question");
 
-// Move NO button randomly
 function moveButton(){
-  const x = Math.random() * (window.innerWidth - 120);
-  const y = Math.random() * (window.innerHeight - 60);
+
+  const containerRect = container.getBoundingClientRect();
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
+
+  const maxX = containerRect.width - btnWidth;
+  const maxY = containerRect.height - btnHeight;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 }
 
-// On screen touch (mobile)
+// Move on touch (mobile)
 document.addEventListener("touchstart", function(){
   moveButton();
 });
 
-// YES button action
+// YES button
 function sayYes(){
   question.innerText = "Yayyyyy ❤️ I love youuuu 😘💍";
   noBtn.style.display = "none";
