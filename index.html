@@ -35,6 +35,7 @@ body{
 h1{
   font-size:22px;
   margin-bottom:20px;
+  min-height:50px;
 }
 
 .buttons{
@@ -80,6 +81,16 @@ const question = document.getElementById("question");
 
 let accepted = false;
 let moved = false;
+let textIndex = 0;
+
+const texts = [
+  "Are you sure? 🥺",
+  "Think again 😭",
+  "Pleaseee 💔",
+  "Don’t break my heart 😢",
+  "Last chance 😩",
+  "I will keep asking 😈"
+];
 
 noBtn.addEventListener("click", function(e){
 
@@ -87,7 +98,11 @@ noBtn.addEventListener("click", function(e){
 
   e.preventDefault();
 
-  // First time click → make it free from layout
+  // Change text
+  question.innerText = texts[textIndex % texts.length];
+  textIndex++;
+
+  // First time click → remove from layout
   if(!moved){
     noBtn.style.position = "fixed";
     moved = true;
