@@ -34,7 +34,7 @@ body{
 }
 
 h1{
-  font-size:22px;
+  font-size:24px;
   margin-bottom:20px;
 }
 
@@ -45,7 +45,6 @@ button{
   border-radius:30px;
   margin:10px;
   cursor:pointer;
-  transition:0.3s;
 }
 
 .yes{
@@ -73,81 +72,25 @@ button{
 const noBtn = document.getElementById("noBtn");
 const question = document.getElementById("question");
 
-const noTexts = [
-  "Are you sure? 🥺",
-  "Think again 😭",
-  "Pleaseee 💔",
-  "Don’t break my heart 😢",
-  "Last chance 😩"
-];
-
-let textIndex = 0;
-let accepted = false;
-
 // Move NO button randomly
-function moveButtonRandom(){
+function moveButton(){
   const x = Math.random() * (window.innerWidth - 120);
   const y = Math.random() * (window.innerHeight - 60);
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
-
-  if(textIndex < noTexts.length){
-    question.innerText = noTexts[textIndex];
-    textIndex++;
-  }
 }
 
-// Click + touch escape
-noBtn.addEventListener("click", moveButtonRandom);
-noBtn.addEventListener("touchstart", moveButtonRandom);
-
-// Smart finger sensing (mobile)
-document.addEventListener("touchmove", function(e){
-
-  if(accepted) return;
-
-  const touch = e.touches[0];
-  const rect = noBtn.getBoundingClientRect();
-
-  const centerX = rect.left + rect.width/2;
-  const centerY = rect.top + rect.height/2;
-
-  const distance = Math.sqrt(
-    Math.pow(touch.clientX - centerX, 2) +
-    Math.pow(touch.clientY - centerY, 2)
-  );
-
-  if(distance < 120){
-    moveButtonRandom();
-  }
+// On screen touch (mobile)
+document.addEventListener("touchstart", function(){
+  moveButton();
 });
 
-// YES button
+// YES button action
 function sayYes(){
-  accepted = true;
-
   question.innerText = "Yayyyyy ❤️ I love youuuu 😘💍";
   noBtn.style.display = "none";
-
-  // SEND TO GOOGLE FORM
-  fetch("YOUR_FORM_RESPONSE_URL", {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: "entry.1263347942=She said YES ❤️"
-  });
 }
-
-// Prevent leaving until YES pressed
-window.addEventListener("beforeunload", function (e) {
-  if(!accepted){
-    e.preventDefault();
-    e.returnValue = '';
-  }
-});
 
 </script>
 
