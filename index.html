@@ -94,7 +94,13 @@ function moveButton(){
   noBtn.style.top = y + "px";
 }
 
-// Move on touch (mobile)
+// Move when NO button is clicked
+noBtn.addEventListener("click", function(e){
+  e.preventDefault();   // prevent accidental click
+  moveButton();
+});
+
+// Move on mobile touch
 document.addEventListener("touchstart", function(){
   moveButton();
 });
@@ -108,5 +114,7 @@ function sayYes(){
 
 </script>
 
+
 </body>
 </html>
+
