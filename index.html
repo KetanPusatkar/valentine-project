@@ -41,7 +41,6 @@ h1{
   display:flex;
   justify-content:center;
   gap:15px;
-  position:relative;
 }
 
 button{
@@ -82,10 +81,13 @@ const question = document.getElementById("question");
 let accepted = false;
 let moved = false;
 
-function moveButton(){
+noBtn.addEventListener("click", function(e){
 
   if(accepted) return;
 
+  e.preventDefault();
+
+  // First time click → make it free from layout
   if(!moved){
     noBtn.style.position = "fixed";
     moved = true;
@@ -102,15 +104,8 @@ function moveButton(){
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
-}
-
-// Move when NO is clicked
-noBtn.addEventListener("click", function(e){
-  e.preventDefault();
-  moveButton();
 });
 
-// YES button
 function sayYes(){
   accepted = true;
   question.innerText = "Yayyyyy ❤️ I love youuuu 😘💍";
