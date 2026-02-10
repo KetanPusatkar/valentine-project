@@ -19,7 +19,7 @@ body{
   justify-content:center;
   align-items:center;
   text-align:center;
-  background:url('bg.jpg') no-repeat center center/cover;
+  background:url('/valentine-project/bg.jpg') no-repeat center center/cover;
   overflow:hidden;
   color:white;
 }
@@ -30,10 +30,11 @@ body{
   border-radius:20px;
   width:90%;
   max-width:400px;
+  position:relative;
 }
 
 h1{
-  font-size:24px;
+  font-size:22px;
   margin-bottom:20px;
 }
 
@@ -55,9 +56,8 @@ button{
 .no{
   background:white;
   color:black;
-  position:relative;
+  position:absolute;
 }
-
 </style>
 </head>
 <body>
@@ -82,13 +82,13 @@ const noTexts = [
 ];
 
 let textIndex = 0;
+let accepted = false;
 
 // Move NO button randomly
-function moveButton(){
-  const x = Math.random() * (window.innerWidth - 100);
-  const y = Math.random() * (window.innerHeight - 50);
+function moveButtonRandom(){
+  const x = Math.random() * (window.innerWidth - 120);
+  const y = Math.random() * (window.innerHeight - 60);
 
-  noBtn.style.position = "absolute";
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 
@@ -98,18 +98,52 @@ function moveButton(){
   }
 }
 
-noBtn.addEventListener("click", moveButton);
-noBtn.addEventListener("touchstart", moveButton);
+// Click + touch escape
+noBtn.addEventListener("click", moveButtonRandom);
+noBtn.addEventListener("touchstart", moveButtonRandom);
 
-// When YES is clicked
+// Smart finger sensing (mobile)
+document.addEventListener("touchmove", function(e){
+
+  if(accepted) return;
+
+  const touch = e.touches[0];
+  const rect = noBtn.getBoundingClientRect();
+
+  const centerX = rect.left + rect.width/2;
+  const centerY = rect.top + rect.height/2;
+
+  const distance = Math.sqrt(
+    Math.pow(touch.clientX - centerX, 2) +
+    Math.pow(touch.clientY - centerY, 2)
+  );
+
+  if(distance < 120){
+    moveButtonRandom();
+  }
+});
+
+// YES button
 function sayYes(){
+  accepted = true;
+
   question.innerText = "Yayyyyy ❤️ I love youuuu 😘💍";
   noBtn.style.display = "none";
+
+  // SEND TO GOOGLE FORM
+  fetch("YOUR_FORM_RESPONSE_URL", {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: "entry.1263347942=She said YES ❤️"
+  });
 }
 
-// Prevent leaving page until YES pressed
+// Prevent leaving until YES pressed
 window.addEventListener("beforeunload", function (e) {
-  if(question.innerText !== "Yayyyyy ❤️ I love youuuu 😘💍"){
+  if(!accepted){
     e.preventDefault();
     e.returnValue = '';
   }
@@ -119,7 +153,3 @@ window.addEventListener("beforeunload", function (e) {
 
 </body>
 </html>
-
-
-
-
