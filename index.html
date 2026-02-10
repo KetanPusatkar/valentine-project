@@ -19,10 +19,9 @@ body{
   justify-content:center;
   align-items:center;
   text-align:center;
-  background:url('/valentine-project/bg.jpg') no-repeat center center/cover;
+  background:url('bg.jpg') no-repeat center center/cover;
   overflow:hidden;
   color:white;
-  position:relative;
 }
 
 .container{
@@ -38,12 +37,18 @@ h1{
   margin-bottom:20px;
 }
 
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  position:relative;
+}
+
 button{
   padding:12px 25px;
   font-size:18px;
   border:none;
   border-radius:30px;
-  margin:10px;
   cursor:pointer;
 }
 
@@ -55,7 +60,6 @@ button{
 .no{
   background:white;
   color:black;
-  position:absolute;
 }
 </style>
 </head>
@@ -63,8 +67,11 @@ button{
 
 <div class="container">
   <h1 id="question">Will you be my Valentine? 💖</h1>
-  <button class="yes" onclick="sayYes()">Yes 😍</button>
-  <button class="no" id="noBtn">No 😢</button>
+
+  <div class="buttons">
+    <button class="yes" onclick="sayYes()">Yes 😍</button>
+    <button class="no" id="noBtn">No 😢</button>
+  </div>
 </div>
 
 <script>
@@ -73,13 +80,16 @@ const noBtn = document.getElementById("noBtn");
 const question = document.getElementById("question");
 
 let accepted = false;
-
-// Initial position
-moveButton();
+let moved = false;
 
 function moveButton(){
 
   if(accepted) return;
+
+  if(!moved){
+    noBtn.style.position = "fixed";
+    moved = true;
+  }
 
   const btnWidth = noBtn.offsetWidth;
   const btnHeight = noBtn.offsetHeight;
@@ -94,14 +104,9 @@ function moveButton(){
   noBtn.style.top = y + "px";
 }
 
-// Move when NO button is clicked
+// Move when NO is clicked
 noBtn.addEventListener("click", function(e){
-  e.preventDefault();   // prevent accidental click
-  moveButton();
-});
-
-// Move on mobile touch
-document.addEventListener("touchstart", function(){
+  e.preventDefault();
   moveButton();
 });
 
@@ -114,7 +119,5 @@ function sayYes(){
 
 </script>
 
-
 </body>
 </html>
-
